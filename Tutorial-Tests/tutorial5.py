@@ -12,6 +12,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
+
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -38,6 +40,20 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(340, 490, 93, 28))
+ 
+        # For displaying confirmation message along with user's info.
+        self.label = QtWidgets.QLabel(self.centralwidget)   
+        self.label.setGeometry(QtCore.QRect(170, 40, 201, 111))
+ 
+        # Keeping the text of label empty initially.      
+        self.label.setText("")    
+ 
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -49,6 +65,32 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.AirplaneButton.setText(_translate("MainWindow", "Airplanes"))
         self.IntersectionButton.setText(_translate("MainWindow", "Car Intersection"))
+        self.pushButton.setText(_translate("MainWindow", "Proceed"))
+        self.pushButton.clicked.connect(self.takeinputs)
+
+    def takeinputs(self):
+        name, done1 = QtWidgets.QInputDialog.getText(
+            self, 'Input Dialog', 'Enter your name:')
+
+        roll, done2 = QtWidgets.QInputDialog.getInt(
+           self, 'Input Dialog', 'Enter your roll:') 
+ 
+        cgpa, done3 = QtWidgets.QInputDialog.getDouble(
+            self, 'Input Dialog', 'Enter your CGPA:')
+ 
+        langs =['C', 'c++', 'Java', 'Python', 'Javascript']
+        lang, done4 = QtWidgets.QInputDialog.getItem(
+        self, 'Input Dialog', 'Language you know:', langs)
+ 
+        if done1 and done2 and done3 and done4 :
+             # Showing confirmation message along
+             # with information provided by user.
+            self.label.setText('Information stored Successfully\nName: '
+                                +str(name)+'('+str(roll)+')'+'\n'+'CGPA: '
+                                +str(cgpa)+'\nSelected Language: '+str(lang)) 
+            # Hide the pushbutton after inputs provided by the use.
+            self.pushButton.hide()  
+
 
     def show_plane(self):
         self.Photo.setPixmap(QtGui.QPixmap("blueangels-det.jpg"))
@@ -64,4 +106,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    
     sys.exit(app.exec_())
