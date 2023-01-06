@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog
 import cv2
+import numpy as np
 
 
 class Ui_MainWindow(object):
@@ -102,6 +103,7 @@ class Ui_MainWindow(object):
 
         self.actionImport_File.triggered.connect(self.importImage)
         self.flipButton.clicked.connect(self.flipImage)
+        self.randomZoomButton.clicked.connect(self.randomZoom)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -117,8 +119,28 @@ class Ui_MainWindow(object):
         
         img = cv2.imread(self.currentImage)
         img = cv2.flip(img, 0) 
-        cv2.imwrite(self.currentImage, img) #This DESTRUCTIVELY OVERWRITES the image data.
+        cv2.imwrite(self.currentImage, img) #This OVERWRITES the image data.
         self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+
+    def randomZoom(self): #For this we would usually have (self, cropheight, cropWidth), but we will set constant values for now since I don't know how to make pop_ups.
+        """This function takes in a crop heigh and width, and cuts out a random portion of the given
+         image and writes it to a file called randomZoomOut. """
+        img = cv2.imread(self.currentImage)
+        crop_width = 64
+        crop_height = 64
+
+        max_x = img.shape[1] - crop_width
+        max_y = img.shape[0] - crop_height
+
+        x = np.random.randint(0, max_x)
+        y = np.random.randint(0, max_y)
+
+        crop = img[y: y + crop_height, x: x + crop_width]
+        imagePath = "C:/Users/holli/Desktop/MuddSub/CV2022-2023/Version 0.01/Images/randomZoomOut.jpg"    
+        cv2.imwrite(imagePath, crop) 
+        self.label.setPixmap(QtGui.QPixmap(imagePath))
+        
+
 
 
     def retranslateUi(self, MainWindow):
