@@ -9,8 +9,38 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QFileDialog
+from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox, QDialog, QRadioButton, QButtonGroup, QWidget, QVBoxLayout, QGridLayout
 import cv2
+
+class AnotherWindow(QWidget):
+    """
+    This "window" is a QWidget. If it has no parent, it
+    will appear as a free-floating window as we want.
+    """
+    def __init__(self):
+        QWidget.__init__(self)
+        layout = QGridLayout()
+        self.setLayout(layout)
+
+        radiobutton = QRadioButton("X-axis")
+        # radiobutton.setChecked(True)
+        radiobutton.toggled.connect(self.onClicked)
+        layout.addWidget(radiobutton, 0, 0)
+
+        radiobutton1 = QRadioButton("Y-axis")
+        radiobutton1.toggled.connect(self.onClicked)
+        layout.addWidget(radiobutton1, 0, 1)
+
+        button_group = QButtonGroup(layout)
+        button_group.addButton(radiobutton)
+        button_group.addButton(radiobutton1)
+
+    def onClicked(self):
+        radioButton = self.sender()
+        if radioButton.isChecked():
+                Ui_MainWindow.setupUi.flipPopped[1] = 0
+        if radioButton.isChecked():
+                Ui_MainWindow.setupUi.flipPopped[1] = 1
 
 
 class Ui_MainWindow(object):
@@ -20,6 +50,7 @@ class Ui_MainWindow(object):
 
         #Declaring some of my own variables
         self.currentImage = ""
+        self.flipPopped = [False, 0]   # First is to determine if the popup has been opened already, second is to flip on axis x (0), or y (1)
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -106,6 +137,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    
     #Button Functions
 
     def importImage(self):
@@ -114,11 +146,21 @@ class Ui_MainWindow(object):
         self.label.setPixmap(QtGui.QPixmap(self.currentImage)) #I included this since the "setPixmap" does not run automatically for some reason, but triggered does?
 
     def flipImage(self):
-        
+        #I want to be able to show a pop up that asks what axis you want to flip it on, x or y.
+        self.show_new_window()
+
+
         img = cv2.imread(self.currentImage)
         img = cv2.flip(img, 0) 
         cv2.imwrite(self.currentImage, img) #This DESTRUCTIVELY OVERWRITES the image data.
         self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+
+    def show_new_window(self):
+        if self.flipPopped[0] == False:
+             self.w = AnotherWindow()
+             self.flipPopped[0] = True
+        self.w.show()
+
 
 
     def retranslateUi(self, MainWindow):
