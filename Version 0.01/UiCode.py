@@ -9,12 +9,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QFileDialog
+import cv2
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         #Reading necessary files
         buttonStyle = open("Styling/buttonStyling.txt", "r") 
+
+        #Declaring some of my own variables
+        self.currentImage = ""
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -74,6 +79,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(180, 10, 591, 411))
         self.label.setText("")
+        self.label.setPixmap(QtGui.QPixmap(self.currentImage)) # It seems like this only runs once at start up? 
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -94,8 +100,26 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionSave_Image)
         self.menubar.addAction(self.menuFile.menuAction())
 
+        self.actionImport_File.triggered.connect(self.importImage)
+        self.flipButton.clicked.connect(self.flipImage)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    #Button Functions
+
+    def importImage(self):
+        file_name, _ = QFileDialog.getOpenFileName()  #This will prompt the user with a file navigation box
+        self.currentImage = str(file_name)
+        self.label.setPixmap(QtGui.QPixmap(self.currentImage)) #I included this since the "setPixmap" does not run automatically for some reason, but triggered does?
+
+    def flipImage(self):
+        
+        img = cv2.imread(self.currentImage)
+        img = cv2.flip(img, 0) 
+        cv2.imwrite(self.currentImage, img) #This DESTRUCTIVELY OVERWRITES the image data.
+        self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -110,6 +134,9 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionImport_File.setText(_translate("MainWindow", "Import File"))
         self.actionSave_Image.setText(_translate("MainWindow", "Save Image"))
+
+
+
 
 
 if __name__ == "__main__":
