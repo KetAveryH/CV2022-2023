@@ -48,7 +48,7 @@
        <number>25</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="flipButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
     /* Style the button itself */
@@ -88,7 +88,7 @@ QPushButton:pressed {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="randomZoomButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
     /* Style the button itself */
@@ -129,7 +129,7 @@ QPushButton:pressed {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="rgbChangeButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
     /* Style the button itself */
