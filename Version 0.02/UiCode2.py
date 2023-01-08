@@ -55,10 +55,10 @@ class Ui_MainWindow(object):
         self.rgbChangeButton.setStyleSheet(str(buttonStyle))
         self.rgbChangeButton.setObjectName("rgbChangeButton")
         self.verticalLayout.addWidget(self.rgbChangeButton)
-        self.pushButton_5 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_5.setStyleSheet(str(buttonStyle)) 
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.verticalLayout.addWidget(self.pushButton_5)
+        self.greyscaleButton = QtWidgets.QPushButton(self.widget)
+        self.greyscaleButton.setStyleSheet(str(buttonStyle)) 
+        self.greyscaleButton.setObjectName("greyscaleButton")
+        self.verticalLayout.addWidget(self.greyscaleButton)
         self.pushButton_6 = QtWidgets.QPushButton(self.widget)
         self.pushButton_6.setStyleSheet(str(buttonStyle)) 
         self.pushButton_6.setObjectName("pushButton_6")
@@ -104,6 +104,7 @@ class Ui_MainWindow(object):
         self.actionImport_File.triggered.connect(self.importImage)
         self.flipButton.clicked.connect(self.flipImage)
         self.randomZoomButton.clicked.connect(self.randomZoom)
+        self.greyscaleButton.clicked.connect(self.greyscale)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -142,6 +143,11 @@ class Ui_MainWindow(object):
         self.label.setPixmap(QtGui.QPixmap(imagePath))
         
 
+    def greyscale(self):    #Will greyscale the shown image
+        img = cv2.imread(self.currentImage, 0)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(self.currentImage, img)
+        self.label.setPixmap(QtGui.QPixmap(self.currentImage))
 
 
     def retranslateUi(self, MainWindow):
@@ -151,7 +157,7 @@ class Ui_MainWindow(object):
         self.randomZoomButton.setText(_translate("MainWindow", "Random \n"
 " Zoom"))
         self.rgbChangeButton.setText(_translate("MainWindow", "RGB Change"))
-        self.pushButton_5.setText(_translate("MainWindow", "PushButton"))
+        self.greyscaleButton.setText(_translate("MainWindow", "Greyscale"))
         self.pushButton_6.setText(_translate("MainWindow", "PushButton"))
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
