@@ -59,10 +59,10 @@ class Ui_MainWindow(object):
         self.greyscaleButton.setStyleSheet(str(buttonStyle)) 
         self.greyscaleButton.setObjectName("greyscaleButton")
         self.verticalLayout.addWidget(self.greyscaleButton)
-        self.pushButton_6 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_6.setStyleSheet(str(buttonStyle)) 
-        self.pushButton_6.setObjectName("pushButton_6")
-        self.verticalLayout.addWidget(self.pushButton_6)
+        self.rotateButton = QtWidgets.QPushButton(self.widget)
+        self.rotateButton.setStyleSheet(str(buttonStyle)) 
+        self.rotateButton.setObjectName("rotateButton")
+        self.verticalLayout.addWidget(self.rotateButton)
         self.pushButton = QtWidgets.QPushButton(self.widget)
         self.pushButton.setSizeIncrement(QtCore.QSize(0, 0))
         self.pushButton.setStyleSheet(str(buttonStyle))
@@ -105,6 +105,7 @@ class Ui_MainWindow(object):
         self.flipButton.clicked.connect(self.flipImage)
         self.randomZoomButton.clicked.connect(self.randomZoom)
         self.greyscaleButton.clicked.connect(self.greyscale)
+        self.rotateButton.clicked.connect(self.rotate)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -143,9 +144,16 @@ class Ui_MainWindow(object):
         self.label.setPixmap(QtGui.QPixmap(imagePath))
         
 
-    def greyscale(self):    #Will greyscale the shown image
+    def greyscale(self):    # Will greyscale the shown image
         img = cv2.imread(self.currentImage, 0)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(self.currentImage, img)
+        self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+
+
+    def rotate(self):       # Will rotate an image 90 degrees clockwise
+        img = cv2.imread(self.currentImage)
+        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
         cv2.imwrite(self.currentImage, img)
         self.label.setPixmap(QtGui.QPixmap(self.currentImage))
 
@@ -158,7 +166,7 @@ class Ui_MainWindow(object):
 " Zoom"))
         self.rgbChangeButton.setText(_translate("MainWindow", "RGB Change"))
         self.greyscaleButton.setText(_translate("MainWindow", "Greyscale"))
-        self.pushButton_6.setText(_translate("MainWindow", "PushButton"))
+        self.rotateButton.setText(_translate("MainWindow", "Rotate"))
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionImport_File.setText(_translate("MainWindow", "Import File"))
