@@ -9,6 +9,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog
+from PIL import Image, ImageQt
+import tempfile
 import cv2
 import numpy as np
 
@@ -19,8 +21,9 @@ class Ui_MainWindow(object):
         buttonStyle = open("Styling/buttonStyling.txt", "r") 
 
         #Declaring some of my own variables
-        self.importedImage = ""
-        self.currentImage = ""
+        self.numpyImage = None
+        self.displayImage = None
+        self.prevImage = None
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -80,7 +83,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(180, 10, 591, 411))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap(self.currentImage)) # It seems like this only runs once at start up? 
+        self.label.setPixmap(QtGui.QPixmap(self.displayImage)) # It seems like this only runs once at start up? 
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -114,21 +117,28 @@ class Ui_MainWindow(object):
 
     def importImage(self):
         file_name, _ = QFileDialog.getOpenFileName()  #This will prompt the user with a file navigation box
-        self.importedImage = str(file_name)
-        self.currentImage = str(file_name)
-        self.label.setPixmap(QtGui.QPixmap(self.currentImage)) #I included this since the "setPixmap" does not run automatically for some reason, but triggered does?
+        tempIm = Image.open(str(file_name))
+        self.numpyImage = np.asarray(tempIm)
+        # self.numpyImage = cv2.imread(str(file_name)) #Should work, but file formats conflict, BGR instead of RGB
+        img = Image.fromarray(self.numpyImage, mode='RGB')  
+        self.displayImage = ImageQt.ImageQt(img)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(self.displayImage)) #I included this since the "setPixmap" does not run automatically for some reason, but triggered does?
 
     def flipImage(self):
         
-        img = cv2.imread(self.currentImage)
-        img = cv2.flip(img, 0) 
-        cv2.imwrite(self.currentImage, img) #This OVERWRITES the image data.
-        self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+        self.numpyImage = cv2.flip(self.numpyImage, 0) 
+        img = Image.fromarray(self.numpyImage, mode='RGB')
+        self.displayImage = ImageQt.ImageQt(img)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(self.displayImage))
 
     def randomZoom(self): #For this we would usually have (self, cropheight, cropWidth), but we will set constant values for now since I don't know how to make pop_ups.
         """This function takes in a crop heigh and width, and cuts out a random portion of the given
-         image and writes it to a file called randomZoomOut. """
-        img = cv2.imread(self.currentImage)
+         image and writes it to a file called randomZoomOut. DOESN'T WORK AFTER FIRST USE,
+         
+         TO DO: we would want to be able to run random zoom on a single image multiple times without 
+         having to reload the image each time.
+         """ 
+        img = self.numpyImage
         crop_width = 64
         crop_height = 64
 
@@ -138,24 +148,32 @@ class Ui_MainWindow(object):
         x = np.random.randint(0, max_x)
         y = np.random.randint(0, max_y)
 
-        crop = img[y: y + crop_height, x: x + crop_width]
-        imagePath = "C:/Users/holli/Desktop/MuddSub/CV2022-2023/Version 0.01/Images/randomZoomOut.jpg"    
-        cv2.imwrite(imagePath, crop) 
-        self.label.setPixmap(QtGui.QPixmap(imagePath))
+        self.numpyImage = img[y: y + crop_height, x: x + crop_width]
+        img = Image.fromarray(self.numpyImage, mode='RGB')
+
+        self.displayImage = ImageQt.ImageQt(img)   #Displays our saved Image
+        self.label.setPixmap(QtGui.QPixmap.fromImage(self.displayImage))
         
 
     def greyscale(self):    # Will greyscale the shown image
-        img = cv2.imread(self.currentImage, 0)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        cv2.imwrite(self.currentImage, img)
-        self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+        # img = cv2.imread(str(self.displayImage), 0)
+        img = self.numpyImage
+        
+        img = Image.fromarray(self.numpyImage, mode='RGB')  #Displays
+        self.numpyImage = cv2.cvtColor(self.numpyImage, cv2.COLOR_BGR2GRAY)  #Updates our file
+
+        self.displayImage = ImageQt.ImageQt(img)   #Displays our saved Image
+        self.label.setPixmap(QtGui.QPixmap.fromImage(self.displayImage))
+
 
 
     def rotate(self):       # Will rotate an image 90 degrees clockwise
-        img = cv2.imread(self.currentImage)
+        img = self.numpyImage
         img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
-        cv2.imwrite(self.currentImage, img)
-        self.label.setPixmap(QtGui.QPixmap(self.currentImage))
+        img = Image.fromarray(self.numpyImage, mode='RGB')  #Displays
+        
+        self.displayImage = ImageQt.ImageQt(img)   #Displays our saved Image
+        self.label.setPixmap(QtGui.QPixmap.fromImage(self.displayImage))
 
 
     def retranslateUi(self, MainWindow):
