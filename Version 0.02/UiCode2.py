@@ -21,8 +21,8 @@ class Ui_MainWindow(object):
         buttonStyle = open("Styling/buttonStyling.txt", "r") 
 
         #Declaring some of my own variables
-        self.numpyImage = None
-        self.displayImage = None
+        self.numpyImage = None          # Holds the data of the image in a numpy array
+        self.displayImage = None        # Holds the Image being displayed
         self.prevImage = None
 
         MainWindow.setObjectName("MainWindow")
