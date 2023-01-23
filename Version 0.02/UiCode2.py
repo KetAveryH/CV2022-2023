@@ -8,11 +8,23 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QFileDialog
+from PyQt5.QtWidgets import QApplication, QFileDialog, QWidget, QPushButton, QLabel, QVBoxLayout 
 from PIL import Image, ImageQt
 import tempfile
 import cv2
 import numpy as np
+
+class AnotherWindow(QWidget):
+    """
+    This "window" is a QWidget. If it has no parent, it
+    will appear as a free-floating window as we want.
+    """
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.label = QLabel("Another Window")
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
 
 class Ui_MainWindow(object):
@@ -109,11 +121,15 @@ class Ui_MainWindow(object):
         self.randomZoomButton.clicked.connect(self.randomZoom)
         self.greyscaleButton.clicked.connect(self.greyscale)
         self.rotateButton.clicked.connect(self.rotate)
+        self.actionSave_Image.triggered.connect(self.show_new_window)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     #Button Functions
+    def show_new_window(self, checked):
+        self.w = AnotherWindow()
+        self.w.show()
 
     def importImage(self):
         file_name, _ = QFileDialog.getOpenFileName()  #This will prompt the user with a file navigation box
