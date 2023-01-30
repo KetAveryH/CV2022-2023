@@ -191,6 +191,7 @@ class Ui_MainWindow(object):
             else:
                 print("Can't undo further")
         except:
+            self.pointer += 1 # Keeps pointer in same position
             print("Can't undo further also")
 
     def redo(self):
@@ -198,6 +199,7 @@ class Ui_MainWindow(object):
             self.pointer += 1
             self.label.setPixmap(QtGui.QPixmap.fromImage(self.QHistory[self.pointer]))
         except:
+            self.pointer -= 1 # Keeps point in same position
             print("Can't redo further")
 
     def destroyRedo(self):
