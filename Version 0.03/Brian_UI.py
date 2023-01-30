@@ -38,6 +38,8 @@ class Ui_MainWindow(object):
         self.cvHistory = []
         self.QHistory = []
 
+        self.folderPath = None
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -124,10 +126,14 @@ class Ui_MainWindow(object):
 
     def importImage(self):
         file_name, _ = QFileDialog.getOpenFileName()  #This will prompt the user with a file navigation box
+        if file_name == "":
+            return
+
         self.pointer += 1
         self.cvHistory.append(cv2.imread(file_name))
         self.QHistory.append(self.cvToQ(self.cvHistory[self.pointer]))
         self.label.setPixmap(QtGui.QPixmap.fromImage(self.QHistory[self.pointer]))
+
 
 
     def flipImage(self):
@@ -231,18 +237,16 @@ class Ui_MainWindow(object):
     def export(self):
         while True:
             try:
-                folderpath, _ = QtWidgets.QFileDialog.getSaveFileName() #You must end your file name with .png or .jpeg or it will result in an error
+                folderpath, _ = QtWidgets.QFileDialog.getSaveFileName(caption="Export File", filter="Images (*.png *.jpg)") 
                 cv2.imwrite(folderpath, self.cvHistory[self.pointer])
                 break
-            
-            except:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Critical)
-                msg.setText("Error")
-                msg.setInformativeText('Please end your file name with .png or .jpeg')
-                msg.setWindowTitle("Error")
-                msg.exec_()
 
+            except:
+                if folderpath == "":
+                    print("No FilePath Selected")
+                else:
+                    print("Export Error")
+                break
 
 
 
