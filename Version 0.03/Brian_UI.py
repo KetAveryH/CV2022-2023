@@ -242,7 +242,7 @@ class Ui_MainWindow(object):
                 break
 
             except: 
-                if folderpath == "":          #Handles the cancel case
+                if folderpath == "":          # Handles the cancel case 
                     print("No FilePath Selected")
                 else:
                     print("Export Error")
