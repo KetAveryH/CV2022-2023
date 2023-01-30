@@ -241,8 +241,8 @@ class Ui_MainWindow(object):
                 cv2.imwrite(folderpath, self.cvHistory[self.pointer])
                 break
 
-            except:
-                if folderpath == "":
+            except: 
+                if folderpath == "":          #Handles the cancel case
                     print("No FilePath Selected")
                 else:
                     print("Export Error")
