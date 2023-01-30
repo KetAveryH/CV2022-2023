@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QFileDialog
+from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox
 from PyQt5.QtGui import QPixmap, QImage
 from PIL import Image, ImageQt
 import cv2
@@ -79,10 +79,18 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionUpload = QtWidgets.QAction(MainWindow)
         self.actionUpload.setObjectName("actionUpload")
+        self.actionExport = QtWidgets.QAction(MainWindow)
+        self.actionExport.setObjectName("actionExport")
         self.menuFile.addAction(self.actionUpload)
+        self.menuFile.addAction(self.actionExport)
         self.menubar.addAction(self.menuFile.menuAction())
 
+
+        
+        
+
         self.actionUpload.triggered.connect(self.importImage)
+        self.actionExport.triggered.connect(self.export)
         self.pushButton.clicked.connect(self.flipImage)
         self.pushButton_2.clicked.connect(self.randomZoom)
         self.pushButton_3.clicked.connect(self.RGB)
@@ -107,6 +115,12 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "Redo"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionUpload.setText(_translate("MainWindow", "Upload"))
+        self.actionExport.setText(_translate("MainWindow", "Export"))
+
+
+
+        
+
 
     def importImage(self):
         file_name, _ = QFileDialog.getOpenFileName()  #This will prompt the user with a file navigation box
@@ -213,6 +227,21 @@ class Ui_MainWindow(object):
         bytesPerLine = 3 * width
         qImg = QImage(cvImg.data, width, height, bytesPerLine, QImage.Format_RGB888)
         return qImg
+
+    def export(self):
+        while True:
+            try:
+                folderpath, _ = QtWidgets.QFileDialog.getSaveFileName() #You must end your file name with .png or .jpeg or it will result in an error
+                cv2.imwrite(folderpath, self.cvHistory[self.pointer])
+                break
+            
+            except:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Error")
+                msg.setInformativeText('Please end your file name with .png or .jpeg')
+                msg.setWindowTitle("Error")
+                msg.exec_()
 
 
 
