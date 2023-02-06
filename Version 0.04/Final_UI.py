@@ -246,6 +246,8 @@ class Ui_MainWindow(object):
         self.RotateSlider.sliderReleased.connect(self.rotateReleased)
         self.PixelateSlider.valueChanged.connect(self.pixelate)
         self.PixelateSlider.sliderReleased.connect(self.pixelateReleased)
+        self.actionUndo.triggered.connect(self.undo)
+        self.actionRedo.triggered.connect(self.redo)
 
     def importImage(self):
         file_name, _ = QFileDialog.getOpenFileName() 
@@ -370,6 +372,31 @@ class Ui_MainWindow(object):
         result_image = small_image.resize(original_size, Image.Resampling.NEAREST)
         self.pointer += 1
         self.PILHistory.append(result_image)
+
+    def undo(self):
+        try:
+            if self.pointer > 0:
+                self.pointer -= 1
+                self.PhotoLabel.setPixmap(self.PILtoPIX(self.PILHistory[self.pointer]))
+            else:
+                print("Can't undo further")
+        except:
+            self.pointer += 1 # Keeps pointer in same position
+            print("Can't undo further also")
+
+    def redo(self):
+        try:
+            self.pointer += 1
+            self.PhotoLabel.setPixmap(self.PILtoPIX(self.PILHistory[self.pointer]))
+        except:
+            self.pointer -= 1 # Keeps point in same position
+            print("Can't redo further")
+
+    def destroyRedo(self):
+        self.cvHistory = self.cvHistory[:self.pointer + 1]
+        self.QHistory = self.QHistory[:self.pointer + 1]
+
+
 
     # Misc
     def storeInstruction(self, instruction, value):
