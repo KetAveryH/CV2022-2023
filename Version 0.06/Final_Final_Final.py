@@ -8,11 +8,13 @@ import os
 import cv2
 import numpy as np
 import sys
+import random
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(587, 617)
+        Dialog.resize(581, 617)
         self.buttonOkOrCancel = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonOkOrCancel.setGeometry(QtCore.QRect(220, 560, 341, 32))
         self.buttonOkOrCancel.setOrientation(QtCore.Qt.Horizontal)
@@ -27,79 +29,79 @@ class Ui_Dialog(object):
         self.randomizerTitleLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.randomizerTitleLabel.setObjectName("randomizerTitleLabel")
         self.saturateBegin = QtWidgets.QLineEdit(Dialog)
-        self.saturateBegin.setGeometry(QtCore.QRect(450, 380, 21, 20))
+        self.saturateBegin.setGeometry(QtCore.QRect(480, 380, 31, 20))
         self.saturateBegin.setObjectName("saturateBegin")
         self.rotateExplainer = QtWidgets.QLabel(Dialog)
-        self.rotateExplainer.setGeometry(QtCore.QRect(60, 420, 331, 16))
+        self.rotateExplainer.setGeometry(QtCore.QRect(30, 420, 401, 16))
         self.rotateExplainer.setObjectName("rotateExplainer")
         self.blurExplainer = QtWidgets.QLabel(Dialog)
-        self.blurExplainer.setGeometry(QtCore.QRect(60, 500, 331, 16))
+        self.blurExplainer.setGeometry(QtCore.QRect(30, 500, 411, 16))
         self.blurExplainer.setObjectName("blurExplainer")
         self.saturateEnd = QtWidgets.QLineEdit(Dialog)
-        self.saturateEnd.setGeometry(QtCore.QRect(490, 380, 21, 20))
+        self.saturateEnd.setGeometry(QtCore.QRect(530, 380, 31, 20))
         self.saturateEnd.setObjectName("saturateEnd")
         self.contrastBegin = QtWidgets.QLineEdit(Dialog)
-        self.contrastBegin.setGeometry(QtCore.QRect(450, 300, 21, 20))
+        self.contrastBegin.setGeometry(QtCore.QRect(480, 300, 31, 20))
         self.contrastBegin.setObjectName("contrastBegin")
         self.sharpnessExplainer = QtWidgets.QLabel(Dialog)
-        self.sharpnessExplainer.setGeometry(QtCore.QRect(60, 340, 331, 16))
+        self.sharpnessExplainer.setGeometry(QtCore.QRect(30, 340, 401, 16))
         self.sharpnessExplainer.setObjectName("sharpnessExplainer")
         self.allowHorizontalFlip = QtWidgets.QCheckBox(Dialog)
-        self.allowHorizontalFlip.setGeometry(QtCore.QRect(60, 160, 101, 17))
+        self.allowHorizontalFlip.setGeometry(QtCore.QRect(40, 160, 131, 17))
         self.allowHorizontalFlip.setObjectName("allowHorizontalFlip")
         self.blurEnd = QtWidgets.QLineEdit(Dialog)
-        self.blurEnd.setGeometry(QtCore.QRect(490, 500, 21, 20))
+        self.blurEnd.setGeometry(QtCore.QRect(530, 500, 31, 20))
         self.blurEnd.setObjectName("blurEnd")
         self.brightnessEnd = QtWidgets.QLineEdit(Dialog)
-        self.brightnessEnd.setGeometry(QtCore.QRect(490, 260, 21, 20))
+        self.brightnessEnd.setGeometry(QtCore.QRect(530, 260, 31, 20))
         self.brightnessEnd.setObjectName("brightnessEnd")
         self.allowGreyscale = QtWidgets.QCheckBox(Dialog)
-        self.allowGreyscale.setGeometry(QtCore.QRect(60, 190, 101, 17))
+        self.allowGreyscale.setGeometry(QtCore.QRect(40, 190, 101, 17))
         self.allowGreyscale.setObjectName("allowGreyscale")
         self.saturateExplainer = QtWidgets.QLabel(Dialog)
-        self.saturateExplainer.setGeometry(QtCore.QRect(60, 380, 331, 16))
+        self.saturateExplainer.setGeometry(QtCore.QRect(30, 380, 401, 16))
         self.saturateExplainer.setObjectName("saturateExplainer")
         self.brightnessBegin = QtWidgets.QLineEdit(Dialog)
-        self.brightnessBegin.setGeometry(QtCore.QRect(450, 260, 21, 20))
+        self.brightnessBegin.setGeometry(QtCore.QRect(480, 260, 31, 20))
         self.brightnessBegin.setObjectName("brightnessBegin")
         self.pixelateExplainer = QtWidgets.QLabel(Dialog)
-        self.pixelateExplainer.setGeometry(QtCore.QRect(60, 460, 331, 16))
+        self.pixelateExplainer.setGeometry(QtCore.QRect(30, 460, 411, 16))
         self.pixelateExplainer.setObjectName("pixelateExplainer")
         self.rotateEnd = QtWidgets.QLineEdit(Dialog)
-        self.rotateEnd.setGeometry(QtCore.QRect(490, 420, 21, 20))
+        self.rotateEnd.setGeometry(QtCore.QRect(530, 420, 31, 20))
         self.rotateEnd.setObjectName("rotateEnd")
         self.contrastExplainer = QtWidgets.QLabel(Dialog)
-        self.contrastExplainer.setGeometry(QtCore.QRect(60, 300, 331, 16))
+        self.contrastExplainer.setGeometry(QtCore.QRect(30, 300, 401, 16))
         self.contrastExplainer.setObjectName("contrastExplainer")
         self.sharpnessBegin = QtWidgets.QLineEdit(Dialog)
-        self.sharpnessBegin.setGeometry(QtCore.QRect(450, 340, 21, 20))
+        self.sharpnessBegin.setGeometry(QtCore.QRect(480, 340, 31, 20))
         self.sharpnessBegin.setObjectName("sharpnessBegin")
         self.rotateBegin = QtWidgets.QLineEdit(Dialog)
-        self.rotateBegin.setGeometry(QtCore.QRect(450, 420, 21, 20))
+        self.rotateBegin.setGeometry(QtCore.QRect(480, 420, 31, 20))
         self.rotateBegin.setObjectName("rotateBegin")
         self.brightnessExplainer = QtWidgets.QLabel(Dialog)
-        self.brightnessExplainer.setGeometry(QtCore.QRect(60, 260, 331, 16))
+        self.brightnessExplainer.setGeometry(QtCore.QRect(30, 260, 411, 16))
         self.brightnessExplainer.setObjectName("brightnessExplainer")
         self.pixelateBegin = QtWidgets.QLineEdit(Dialog)
-        self.pixelateBegin.setGeometry(QtCore.QRect(450, 460, 21, 20))
+        self.pixelateBegin.setGeometry(QtCore.QRect(480, 460, 31, 20))
         self.pixelateBegin.setObjectName("pixelateBegin")
         self.sharpnessEnd = QtWidgets.QLineEdit(Dialog)
-        self.sharpnessEnd.setGeometry(QtCore.QRect(490, 340, 21, 20))
+        self.sharpnessEnd.setGeometry(QtCore.QRect(530, 340, 31, 20))
         self.sharpnessEnd.setObjectName("sharpnessEnd")
         self.pixelateEnd = QtWidgets.QLineEdit(Dialog)
-        self.pixelateEnd.setGeometry(QtCore.QRect(490, 460, 21, 20))
+        self.pixelateEnd.setGeometry(QtCore.QRect(530, 460, 31, 20))
         self.pixelateEnd.setObjectName("pixelateEnd")
         self.allowVerticalFlip = QtWidgets.QCheckBox(Dialog)
-        self.allowVerticalFlip.setGeometry(QtCore.QRect(60, 130, 101, 17))
+        self.allowVerticalFlip.setGeometry(QtCore.QRect(40, 130, 101, 17))
         self.allowVerticalFlip.setObjectName("allowVerticalFlip")
         self.blurBegin = QtWidgets.QLineEdit(Dialog)
-        self.blurBegin.setGeometry(QtCore.QRect(450, 500, 21, 20))
+        self.blurBegin.setGeometry(QtCore.QRect(480, 500, 31, 20))
         self.blurBegin.setObjectName("blurBegin")
         self.allowRotate90 = QtWidgets.QCheckBox(Dialog)
-        self.allowRotate90.setGeometry(QtCore.QRect(60, 100, 101, 17))
+        self.allowRotate90.setGeometry(QtCore.QRect(40, 100, 101, 17))
         self.allowRotate90.setObjectName("allowRotate90")
         self.contrastEnd = QtWidgets.QLineEdit(Dialog)
-        self.contrastEnd.setGeometry(QtCore.QRect(490, 300, 21, 20))
+        self.contrastEnd.setGeometry(QtCore.QRect(530, 300, 31, 20))
         self.contrastEnd.setObjectName("contrastEnd")
         self.numOfPhotoLabel = QtWidgets.QLabel(Dialog)
         self.numOfPhotoLabel.setGeometry(QtCore.QRect(50, 550, 171, 41))
@@ -114,11 +116,12 @@ class Ui_Dialog(object):
         self.numOfPhotoInput.setFont(font)
         self.numOfPhotoInput.setObjectName("numOfPhotoInput")
         self.warningLabel = QtWidgets.QLabel(Dialog)
-        self.warningLabel.setGeometry(QtCore.QRect(220, 100, 311, 101))
+        self.warningLabel.setGeometry(QtCore.QRect(220, 100, 331, 101))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.warningLabel.setFont(font)
         self.warningLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.warningLabel.setWordWrap(True)
         self.warningLabel.setObjectName("warningLabel")
 
         self.retranslateUi(Dialog)
@@ -156,7 +159,8 @@ class Ui_Dialog(object):
         self.allowRotate90.setText(_translate("Dialog", "Rotate 90?"))
         self.contrastEnd.setText(_translate("Dialog", "20"))
         self.numOfPhotoLabel.setText(_translate("Dialog", "Number of Photos:"))
-        self.warningLabel.setText(_translate("Dialog", "Warning and Errors appear here."))
+        self.numOfPhotoInput.setText(_translate("Dialog", "5"))
+        self.warningLabel.setText(_translate("Dialog", "Warning and Errors will appear here."))
 
         self.buttonOkOrCancel.clicked.connect(self.handleButton)
 
@@ -167,9 +171,28 @@ class Ui_Dialog(object):
             print("Cancel button was clicked")
             return
 
+    def get_input_values(self):
+        ret = []
+        ret.append(self.allowRotate90.isChecked())
+        ret.append(self.allowVerticalFlip.isChecked())
+        ret.append(self.allowHorizontalFlip.isChecked())
+        ret.append(self.allowGreyscale.isChecked())
+        ret.append((int(self.brightnessBegin.text()), int(self.brightnessEnd.text())))
+        ret.append((int(self.contrastBegin.text()), int(self.contrastEnd.text())))
+        ret.append((int(self.sharpnessBegin.text()), int(self.sharpnessEnd.text())))
+        ret.append((int(self.saturateBegin.text()), int(self.saturateEnd.text())))
+        ret.append((int(self.rotateBegin.text()), int(self.rotateEnd.text())))
+        ret.append((int(self.pixelateBegin.text()), int(self.pixelateEnd.text())))
+        ret.append((int(self.blurBegin.text()), int(self.blurEnd.text())))
+        ret.append(int(self.numOfPhotoInput.text()))
 
+        return ret
 
+    def changeTitle(self, new_title):
+        _translate = QtCore.QCoreApplication.translate
+        self.randomizerTitleLabel.setText(_translate("Dialog", new_title))
 
+        
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
 
@@ -769,7 +792,7 @@ class Ui_MainWindow(object):
         self.PixelateSlider.setSliderPosition(int(self.listPixelate[self.pointer]))
         self.BlurSlider.setSliderPosition(int(self.listBlur[self.pointer]))
 
-    def randomizer(self):
+    def randomizer(self, change_title = False):
 
         if not self.imageExists:
             self.WarningLabel.setText(QtCore.QCoreApplication.translate("MainWindow", "Please import an image first before trying to randomize"))
@@ -779,9 +802,66 @@ class Ui_MainWindow(object):
         dialog = Ui_Dialog()
         dialog.setupUi(SecondaryWindow)
         SecondaryWindow.show()
-        if SecondaryWindow.exec_():
-            print(":(")
 
+        if change_title:
+            dialog.changeTitle("Incorrect Values. Try Again")
+
+        if SecondaryWindow.exec_():
+            try:
+                self.makeRandom(dialog.get_input_values())
+            except:
+                self.randomizer(change_title=True)
+
+    def makeRandom(self, instructions):
+        # FIX THIS SHIT!
+        print(instructions)
+
+        folderpath, _ = QtWidgets.QFileDialog.getSaveFileName(caption="Export File", filter="Images (*.png)") 
+        temppath = folderpath
+        # self.WarningLabel.setText(QtCore.QCoreApplication.translate("MainWindow", "EXPORTED SUCCESSFULLY"))
+        
+        for i in range(instructions[11]):
+            if instructions[0]:
+                self.listRotate90.append(random.randint(0, 3))
+            else:
+                self.listRotate90.append(0)
+
+            if instructions[1]:
+                self.listVerticalFlip.append(random.choice([True, False]))
+            else:
+                self.listVerticalFlip.append(False)
+            
+            if instructions[2]:
+                self.listHorizontalFlip.append(random.choice([True, False]))
+            else:
+                self.listVerticalFlip.append(False)
+
+            if instructions[3]:
+                self.listGreyscale.append(random.choice([True, False]))
+            else:
+                self.listGreyscale.append(False)
+
+            self.listBrightness.append(random.randint(instructions[4][0], instructions[4][1]) / 10)
+            self.listContrast.append(random.randint(instructions[5][0], instructions[5][1]) / 10)
+            self.listSharpness.append(random.randint(instructions[6][0], instructions[6][1]) / 10)
+            self.listSaturate.append(random.randint(instructions[7][0], instructions[7][1]) / 10)
+            self.listRotate.append(random.randint(instructions[8][0], instructions[8][1]))
+            self.listPixelate.append(random.randint(instructions[9][0], instructions[9][1]))
+            self.listBlur.append(random.randint(instructions[10][0], instructions[10][1]))
+
+            self.pointer += 1
+            final_image = self.originalResolutionReconstructImage()
+
+            try:
+                final_image.save(temppath)
+                temppath = folderpath[0:-4] + '_' + str(i + 1) + folderpath[-4:]
+            except:
+                self.WarningLabel.setText(QtCore.QCoreApplication.translate("MainWindow", "Something went wrong"))
+                return
+
+
+        self.WarningLabel.setText(QtCore.QCoreApplication.translate("MainWindow", "Randomizer Complete"))
+                
     def resizePhotoLabel(self, im):
         width, height = im.size
         new_scale_x = self.originalPhotoLabelWidth / width
